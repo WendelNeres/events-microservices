@@ -16,6 +16,7 @@ public class Event {
     private String id;
 
     private int maxParticipants;
+    private int registeredParticants;
     private String data;
     private String title;
     private String description;
@@ -62,6 +63,16 @@ public class Event {
         return title;
     }
 
+
+
+    public int getRegisteredParticants() {
+        return registeredParticants;
+    }
+
+    public void setRegisteredParticants(int registeredParticants) {
+        this.registeredParticants = registeredParticants;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -82,16 +93,16 @@ public class Event {
         this.maxParticipants = maxParticipants;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Event event)) return false;
-        return getMaxParticipants() == event.getMaxParticipants() && Objects.equals(getId(), event.getId()) && Objects.equals(getData(), event.getData()) && Objects.equals(getTitle(), event.getTitle()) && Objects.equals(getDescription(), event.getDescription());
+        return getMaxParticipants() == event.getMaxParticipants() && getRegisteredParticants() == event.getRegisteredParticants() && Objects.equals(getData(), event.getData()) && Objects.equals(getTitle(), event.getTitle()) && Objects.equals(getDescription(), event.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getMaxParticipants(), getData(), getTitle(), getDescription());
+        return Objects.hash(getMaxParticipants(), getRegisteredParticants(), getData(), getTitle(), getDescription());
     }
+
 }

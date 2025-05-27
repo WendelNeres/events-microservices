@@ -53,10 +53,15 @@ public class EventService {
 
         if(event != null){
             Subscription subscription = new Subscription(event, emailParticipant);
-            subscriptionRepository.save(subscription);
 
-            EmailRequestDTO emailRequestDTO = new EmailRequestDTO(emailParticipant, "Confirmação de inscrição", "");
-            emailServiceClient.sendEmail(emailRequestDTO);
+            if(event.getRegisteredParticants() < event.getMaxParticipants()) {
+                subscriptionRepository.save(subscription);
+
+                event.setRegisteredParticants(event.getRegisteredParticants() + 1);
+                EmailRequestDTO emailRequestDTO = new EmailRequestDTO(emailParticipant, "Confirmação de inscrição", "");
+                emailServiceClient.sendEmail(emailRequestDTO);
+
+            }
         }else throw new EventNotFoundException();
 
     }
