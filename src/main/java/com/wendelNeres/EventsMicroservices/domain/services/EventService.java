@@ -4,6 +4,7 @@ package com.wendelNeres.EventsMicroservices.domain.services;
 import com.wendelNeres.EventsMicroservices.domain.entities.Event;
 import com.wendelNeres.EventsMicroservices.domain.entities.Subscription;
 import com.wendelNeres.EventsMicroservices.dtos.CreateEventDTO;
+import com.wendelNeres.EventsMicroservices.dtos.CreateSubscriptionDTO;
 import com.wendelNeres.EventsMicroservices.dtos.EmailRequestDTO;
 import com.wendelNeres.EventsMicroservices.dtos.EventDTO;
 import com.wendelNeres.EventsMicroservices.exceptions.EventFullException;
@@ -49,11 +50,11 @@ public class EventService {
         return new EventDTO(eventRepository.save(new Event(createEventDTO)));
     }
 
-    public void registerParticipant(String idEvent, String emailParticipant ){
+    public void registerParticipant(String idEvent, CreateSubscriptionDTO createSubscriptionDTO){
         Event event = eventRepository.findById(idEvent).get();
 
         if(event != null){
-            Subscription subscription = new Subscription(event, emailParticipant);
+            Subscription subscription = new Subscription(event, createSubscriptionDTO.emailParticipant());
 
             if(event.getRegisteredParticants() >= event.getMaxParticipants()) {
                 throw new EventFullException();
@@ -62,7 +63,7 @@ public class EventService {
             subscriptionRepository.save(subscription);
 
             event.setRegisteredParticants(event.getRegisteredParticants() + 1);
-            EmailRequestDTO emailRequestDTO = new EmailRequestDTO(emailParticipant, "Confirmação de inscrição", "Voce foi inscrito com sucesso");
+            EmailRequestDTO emailRequestDTO = new EmailRequestDTO(createSubscriptionDTO.emailParticipant(), "Confirmação de inscrição", "Voce foi inscrito com sucesso");
             emailServiceClient.sendEmail(emailRequestDTO);
         }else throw new EventNotFoundException();
 
