@@ -2,7 +2,11 @@ package com.wendelNeres.EventsMicroservices.domain.services;
 
 
 import com.wendelNeres.EventsMicroservices.domain.entities.Event;
+import com.wendelNeres.EventsMicroservices.domain.entities.Subscription;
+import com.wendelNeres.EventsMicroservices.dtos.CreateEventDTO;
+import com.wendelNeres.EventsMicroservices.dtos.EmailRequestDTO;
 import com.wendelNeres.EventsMicroservices.dtos.EventDTO;
+import com.wendelNeres.EventsMicroservices.exceptions.EventNotFoundException;
 import com.wendelNeres.EventsMicroservices.repositories.EventRepository;
 import com.wendelNeres.EventsMicroservices.repositories.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +44,20 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    public EventDTO createEvent(Eve){
+    public EventDTO createEvent(CreateEventDTO createEventDTO){
+        return new EventDTO(eventRepository.save(new Event(createEventDTO)));
+    }
+
+    public void registerParticipant(String idEvent, String emailParticipant ){
+        Event event = eventRepository.findById(idEvent).get();
+
+        if(event != null){
+            Subscription subscription = new Subscription(event, emailParticipant);
+            subscriptionRepository.save(subscription);
+
+            EmailRequestDTO emailRequestDTO = new EmailRequestDTO(emailParticipant, "Confirmação de inscrição", "");
+            emailServiceClient.sendEmail(emailRequestDTO);
+        }else throw new EventNotFoundException();
 
     }
 

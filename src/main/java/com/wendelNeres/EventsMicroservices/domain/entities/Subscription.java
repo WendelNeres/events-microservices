@@ -27,6 +27,11 @@ public class Subscription {
 
     }
 
+    public Subscription(Event event, String emailParticipant) {
+        this.event = event;
+        this.participantEmail = emailParticipant;
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package com.wendelNeres.EventsMicroservices.domain.entities;
 
+import com.wendelNeres.EventsMicroservices.dtos.CreateEventDTO;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -29,6 +30,14 @@ public class Event {
         this.data = data;
         this.title = title;
         this.description = description;
+
+    }
+
+    public Event(CreateEventDTO createEventDTO) {
+        this.title = createEventDTO.title();
+        this.data = createEventDTO.data();
+        this.description = createEventDTO.description();
+        this.maxParticipants = createEventDTO.maxParticipants();
 
     }
 
