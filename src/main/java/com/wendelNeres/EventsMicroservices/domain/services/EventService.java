@@ -6,6 +6,7 @@ import com.wendelNeres.EventsMicroservices.domain.entities.Subscription;
 import com.wendelNeres.EventsMicroservices.dtos.CreateEventDTO;
 import com.wendelNeres.EventsMicroservices.dtos.EmailRequestDTO;
 import com.wendelNeres.EventsMicroservices.dtos.EventDTO;
+import com.wendelNeres.EventsMicroservices.exceptions.EventFullException;
 import com.wendelNeres.EventsMicroservices.exceptions.EventNotFoundException;
 import com.wendelNeres.EventsMicroservices.repositories.EventRepository;
 import com.wendelNeres.EventsMicroservices.repositories.SubscriptionRepository;
@@ -54,14 +55,15 @@ public class EventService {
         if(event != null){
             Subscription subscription = new Subscription(event, emailParticipant);
 
-            if(event.getRegisteredParticants() < event.getMaxParticipants()) {
-                subscriptionRepository.save(subscription);
-
-                event.setRegisteredParticants(event.getRegisteredParticants() + 1);
-                EmailRequestDTO emailRequestDTO = new EmailRequestDTO(emailParticipant, "Confirmação de inscrição", "");
-                emailServiceClient.sendEmail(emailRequestDTO);
-
+            if(event.getRegisteredParticants() >= event.getMaxParticipants()) {
+                throw new EventFullException();
             }
+
+            subscriptionRepository.save(subscription);
+
+            event.setRegisteredParticants(event.getRegisteredParticants() + 1);
+            EmailRequestDTO emailRequestDTO = new EmailRequestDTO(emailParticipant, "Confirmação de inscrição", "Voce foi inscrito com sucesso");
+            emailServiceClient.sendEmail(emailRequestDTO);
         }else throw new EventNotFoundException();
 
     }
