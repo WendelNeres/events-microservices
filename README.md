@@ -33,7 +33,9 @@ cd events-microservices
 
 ---
 
-##🧠 Aprendizados
+
+
+## 🧠 Aprendizados
 - 🔹 Arquitetura baseada em microserviços com Spring Boot 
 - 🔹 Comunicação síncrona entre serviços usando Spring Cloud OpenFeign
 - 🔹 Uso do banco de dados H2 in-memory para desenvolvimento e testes
@@ -42,6 +44,6 @@ cd events-microservices
 
 ---
   
-###📄 Licença
+### 📄 Licença
 Este projeto está sob a licença MIT – fique à vontade para usar, estudar e modificar.
 
