@@ -25,11 +25,12 @@ Projeto desenvolvido em Java com Spring Boot que implementa uma arquitetura de m
 
 ## ▶️ Como Executar
 
-### 1. Clone o repositório
+## 1. Clone o repositório
 
 ```bash
 git clone https://github.com/WendelNeres/events-microservices.git
 cd events-microservices
+
 ---
 
 ##🧠 Aprendizados
